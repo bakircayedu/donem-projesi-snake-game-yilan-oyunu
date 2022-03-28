@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <time.h>
+#include <stdlib.h>
+struct oyun
+{
+    int puan;
+};
+
+
+
+int harita[80][23]={0};
+int kuyrukX[500];
+int kuyrukY[500];
+int maap[80][23]={0};
+
+
+int main()
+{
+
+     FILE *fp;
+    char text[25];
+    fp=fopen("yilanoyunu.txt","a");
+
+    if(fp==NULL)
+    {
+        printf("dosya olusmadi.");
+    }
+    else
+    {
+        fprintf(fp,"-----------------------\npuani        oyuncu adi\n--------     ----------\n");
+        gotoxy(82,4);printf("oyuncu adi giriniz:");
+        fgets(text,25,stdin);
+
+    }
+    struct oyun puani;
+    cerceve(0,0,79,22,1);
+    ekranyazdir();
+    int yilanx=40,yilany=12;
+    int ekley=0,eklex=0;
+    unsigned char tus;
+    int kontrol=0;
+
+
+
+
+    do
+    {
+        if(kbhit())
+        {
+            tus=getch();
+            if(tus==224)
+            {
+                tus=getch();
+                switch(tus)
+                {
+                    case 72:ekley=-1; eklex=0;
+                        break;
+                    case 80:ekley=1; eklex=0;
+                        break;
+                    case 77: eklex=1; ekley=0;
+                        break;
+                    case 75: eklex=-1; ekley=0;
+                }
+            }
+        }
+
+        yilanx=yilanx+eklex;
+        yilany=yilany+ekley;
+
+        if(yilanx==78)
+            {
+                gotoxy(yilanx,yilany);printf("<<OYUN BITTI>>");
+                getch();
+                kontrol=1;
+            }
+
+        if(yilany==22)
+           {
+                gotoxy(yilanx,yilany);printf("<<OYUN BITTI>>");
+                getch();
+                kontrol=1;
+            }
+         if(yilanx==2)
+            {
+                gotoxy(yilanx,yilany);printf("<<OYUN BITTI>>");
+                getch();
+                kontrol=1;
+            }
+         if(yilany==1)
+            {
+                gotoxy(yilanx,yilany);printf("<<OYUN BITTI>>");
+                getch();
+                kontrol=1;
+            }
+
+        kuyrukX[0]=yilanx;
+        kuyrukY[0]=yilany;
+        int i;
+
+
+        gotoxy(yilanx,yilany);printf("o");
+        Sleep(50);
+        gotoxy(yilanx,yilany);printf(" ");
+
+
+    } while (kontrol==0);
+
+
+        fprintf(fp,"%d\t\t",puani.puan*10);
+        fputs(text,fp);
+
+}
+
+void gotoxy(short x, short y)
+{
+	HANDLE hConsoleOutput;
+	COORD Cursor_Pos = {x-1, y-1};
+
+	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(hConsoleOutput, Cursor_Pos);
+}
+
+void cerceve(int dikey1, int yatay1, int dikey2, int yatay2,int tur)
+{
+    int i;
+    for(i=dikey1; i<=dikey2;i++)
+    {
+        harita[i][yatay1] = tur;
+
+        harita[i][yatay2] = tur;
+
+    }
+    for(i=yatay1; i<=yatay2;i++)
+    {
+        harita[dikey1][i] = tur;
+
+        harita[dikey2][i] = tur;
+
+    }
+}
+
+void ekranyazdir()
+{
+    int x,y;
+    for(x=0;x<80;x++)
+    {
+
+
+        for(y=0;y<23;y++)
+        {
+        gotoxy(x+1,y+1);
+
+            if(harita[x][y]==1)
+            {
+                printf("%c",219);
+            }
+
+            else if(harita[x][y]==2)
+            {
+                printf("%c",176);
+            }
+            else if(harita[x][y]==3)
+                printf("%c",88);
+
+
+        }
+    }
+}
