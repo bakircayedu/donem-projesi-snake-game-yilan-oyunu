@@ -42,7 +42,7 @@ void main()
 
 int a,b,oyuncuSayisi;
 
-    system("color BB");
+    system("color 2F");
 
     printf("oyuncu sayisini giriniz:");
     scanf("%d",&oyuncuSayisi);
